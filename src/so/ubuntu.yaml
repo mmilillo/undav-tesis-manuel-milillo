@@ -1,4 +1,0 @@
-image: ubuntu
-container_name: mi_ubuntu_container
-command: sleep infinity
-tty: true

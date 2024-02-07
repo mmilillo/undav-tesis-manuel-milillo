@@ -1,8 +1,8 @@
-  image: postgres
+  image: docker.io/library/postgres
   container_name: mi_postgres_container
   environment:
     POSTGRES_USER: myuser
     POSTGRES_PASSWORD: mypassword
     POSTGRES_DB: mydatabase
   ports:
-    - "5432:5432"
+    - "5433:5432"
