@@ -1,0 +1,7 @@
+version: 1.0.6
+services:
+  SO:
+    image: docker.io/library/ubuntu
+    container_name: laboratorioCopado_os_ubuntu
+    command: sleep infinity
+    tty: true

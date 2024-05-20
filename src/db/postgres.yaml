@@ -1,5 +1,5 @@
   image: docker.io/library/postgres
-  container_name: mi_postgres_container
+  container_name: _db_postgres
   environment:
     POSTGRES_USER: myuser
     POSTGRES_PASSWORD: mypassword

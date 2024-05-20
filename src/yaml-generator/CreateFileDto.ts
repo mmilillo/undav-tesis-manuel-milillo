@@ -11,10 +11,13 @@ type DataBase =
 
 
 export class CreateFileDto {
-    @ApiProperty({description: 'Operating system to be created', enum: ['ubuntu', 'windows']})
+    @ApiProperty({description: 'Laboratory name to be created', required: true})
+    laboratoryName: string
+
+    @ApiProperty({description: 'Operating system to be created', enum: ['ubuntu', 'windows'], required: true})
     os: OperatingSystem;
 
-    @ApiProperty({description: 'Data base to be created', enum: ['postgres', 'mysql']})
+    @ApiProperty({description: 'Data base to be created', enum: ['postgres', 'mysql'], required: false})
     db? : DataBase;
   }
 

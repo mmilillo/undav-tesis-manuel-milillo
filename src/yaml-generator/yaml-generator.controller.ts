@@ -13,11 +13,16 @@ export class YamlGeneratorController {
 
   @Put()
   @ApiResponse({ status: 200, description: 'The record has been successfully created.'})
-  @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: 'OS must be defined.'})
+  @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: 'Required fields not completed.'})
   createFile(@Body() createFileDto: CreateFileDto): string {
 
+    // TODO: Validaciones automaticas de esquema
     if(!createFileDto.os){
       throw new HttpException('OS must be defined', HttpStatus.BAD_REQUEST);
+    }
+
+    if(!createFileDto.laboratoryName){
+      throw new HttpException('laboratoryName must be defined', HttpStatus.BAD_REQUEST);
     }
 
     try{

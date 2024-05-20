@@ -1,5 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import {load, dump} from 'js-yaml';
 import { CreateFileDto } from './CreateFileDto';
 
@@ -7,27 +7,34 @@ import { CreateFileDto } from './CreateFileDto';
 export class YamlGeneratorService {
   generateFile(createFileDto: CreateFileDto ): void {
 
-    const dockerComposeFile = readFileSync('./src/template/podman-compose-template.yaml', 'utf8');
-    const dockerCompose = load(dockerComposeFile);
-    dockerCompose.services = {}; 
+    const filePath = `./src/docker-compose/${createFileDto.laboratoryName}.yml`;
+    //if (existsSync(filePath)) throw new Error('File already exists');
 
-    const osPath = './src/os/' + createFileDto.os + '.yaml';
+    const podmanComposeFile = readFileSync('./src/template/podman-compose-template.yaml', 'utf8');
+    const compose = load(podmanComposeFile);
+    compose.services = {}; 
+
+    //const osPath = './src/os/' + createFileDto.os + '.yaml';
+    const osPath = `./src/os/${createFileDto.os}.yaml`;
     const osFile = readFileSync(osPath, 'utf8');
     const os = load(osFile);
-    dockerCompose.services.SO = os;
+    os.container_name = createFileDto.laboratoryName + os.container_name;
+    compose.services.SO = os;
 
 
     if(createFileDto.db){
-      const dbPath = './src/db/' + createFileDto.db + '.yaml';
+      //const dbPath = './src/db/' + createFileDto.db + '.yaml';
+      const dbPath = `./src/db/${createFileDto.db}.yaml`;
       const dbFile = readFileSync(dbPath, 'utf8');
       const db = load(dbFile);
-      dockerCompose.services.DB = db;
+      db.container_name = createFileDto.laboratoryName + db.container_name;
+      compose.services.DB = db;
     }
     
-    console.debug("dockerCompose yaml generated on memory.");
-    console.debug(dockerCompose);
+    console.debug("compose yaml generated on memory.");
+    console.debug(compose);
 
-    writeFileSync('./src/docker-compose/podman-compose.yml', dump(dockerCompose));
+    writeFileSync(filePath, dump(compose));
 
   }
 

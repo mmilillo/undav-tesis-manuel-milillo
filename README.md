@@ -71,6 +71,32 @@ Una vez que la API se encuentra ejecutándose es posible consultar la definició
 curl -X PUT -H "Content-Type: application/json" -d '{"os": "ubuntu", "db": "postgres"}' http://localhost:3000/yaml-generator
 ```
 
+### Crear contenedores
+
+```bash
+curl -X PUT -H "Content-Type: application/json" -d '{"os": "ubuntu", "db": "postgres"}' http://localhost:3000/yaml-generator
+```
+
+### Detener contenedores
+
+```bash
+curl -X PUT -H "Content-Type: application/json" -d '{"os": "ubuntu", "db": "postgres"}' http://localhost:3000/yaml-generator
+```
+
+### Reanudar contenedores
+
+```bash
+curl -X PUT -H "Content-Type: application/json" -d '{"os": "ubuntu", "db": "postgres"}' http://localhost:3000/yaml-generator
+```
+
+### destruir contenedores
+
+```bash
+curl -X PUT -H "Content-Type: application/json" -d '{"os": "ubuntu", "db": "postgres"}' http://localhost:3000/yaml-generator
+```
+
+
+
 ### Conectarse al sistema operativo seleccionado 
 
 ```bash

@@ -1,4 +1,4 @@
 image: docker.io/library/ubuntu
-container_name: mi_ubuntu_container
+container_name: _os_ubuntu
 command: sleep infinity
 tty: true 
