@@ -1,4 +1,7 @@
 image: docker.io/library/ubuntu
 container_name: _os_ubuntu
-command: sleep infinity
+volumes:
+  - ./local:/codigo
+working_dir: /codigo
+command: /bin/bash -c "apt-get update && apt-get install -y git && cd /codigo && git init && sleep infinity"
 tty: true 
