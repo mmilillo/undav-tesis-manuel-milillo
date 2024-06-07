@@ -13,7 +13,7 @@ Aprovechar las ventajas de utilizar contenedores y control de versiones en mater
 
 Se diagramaron las pantallas de la aplicación y su funcionalidad utilizando la herramienta [Excalidraw](https://excalidraw.com). 
 
-![Diagrama](/images/diagrama-pantallas.svg)
+![Diagrama](/documentation/images/diagrama-pantallas.svg)
 
 Para ver el diagrama en mas detalle puede importar el archivo `/diagrams/diagrama-pantallas.excalidraw` a [Excalidraw](https://excalidraw.com) o acceder a este [link](https://excalidraw.com/#json=utYk9w-Lt_lDz0vpjlv6j,tRiqt-LgAY7Is0AQR3Wu0w).
 
@@ -68,33 +68,36 @@ Una vez que la API se encuentra ejecutándose es posible consultar la definició
 ### Generar archivo podman-compose-yaml
 
 ```bash
-curl -X PUT -H "Content-Type: application/json" -d '{"os": "ubuntu", "db": "postgres"}' http://localhost:3000/yaml-generator
+curl --location --request PUT 'http://localhost:3000/yaml-generator' \
+--header 'Content-Type: application/json' \
+--data '{
+    "laboratoryName": "demoGit",
+    "os": "ubuntu",
+    "db": "postgres"
+}'
 ```
 
 ### Crear contenedores
 
 ```bash
-curl -X PUT -H "Content-Type: application/json" -d '{"os": "ubuntu", "db": "postgres"}' http://localhost:3000/yaml-generator
-```
-
-### Detener contenedores
-
-```bash
-curl -X PUT -H "Content-Type: application/json" -d '{"os": "ubuntu", "db": "postgres"}' http://localhost:3000/yaml-generator
-```
-
-### Reanudar contenedores
-
-```bash
-curl -X PUT -H "Content-Type: application/json" -d '{"os": "ubuntu", "db": "postgres"}' http://localhost:3000/yaml-generator
+curl --location 'http://localhost:3000/command' \
+--header 'Content-Type: application/json' \
+--data '{
+    "laboratoryName": "demoGit",
+    "operation": "up"
+}'
 ```
 
 ### destruir contenedores
 
 ```bash
-curl -X PUT -H "Content-Type: application/json" -d '{"os": "ubuntu", "db": "postgres"}' http://localhost:3000/yaml-generator
+curl --location 'http://localhost:3000/command' \
+--header 'Content-Type: application/json' \
+--data '{
+    "laboratoryName": "demoGit",
+    "operation": "down"
+}'
 ```
-
 
 
 ### Conectarse al sistema operativo seleccionado 
@@ -111,21 +114,41 @@ ping mi_postgres_container 5432
 ```
 
 
+### Consultar estado del trabajo en el laboratorio
+
+
+```bash
+curl --location 'http://localhost:3000/version-control/status' \
+--header 'Content-Type: application/json' \
+--data '{
+    "laboratoryName": "demoGit",
+    "operation": "status"
+}'
+```
+
+
+### Confirmar los cambios del trabajo en el laboratorio
+
+```bash
+curl --location 'http://localhost:3000/version-control/commit' \
+--header 'Content-Type: application/json' \
+--data '{
+    "laboratoryName": "demoGit",
+    "message": "primer commit"
+}'
+```
+
+### Descartar los cambios del trabajo en el laboratorio
+
+```bash
+curl --location 'http://localhost:3000/version-control/reset' \
+--header 'Content-Type: application/json' \
+--data '{
+    "laboratoryName": "demoGit"
+}'
+```
+
+### Para mas funcionalidades consultar carpeta de documentacion
 
 
 
-
-
-
-## borrador, comandos utilizados en el desarrollo
-
-docker-compose up -d
-desde terminar o docker desktop
-
-psql -U myuser -d mydatabase -h postgres
-mypassword
-
-emilinar contenedores
-docker-compose down -v
-
-docker-compose up -d

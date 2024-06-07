@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import {exec, spawn} from 'node:child_process';
 import { ComposeCommandDto } from './composeCommandDto';
 import { existsSync } from 'node:fs';
+import { Laboratory } from './laboratory';
+import { string } from 'yaml/dist/schema/common/string';
 
 @Injectable()
 export class CommandService {
@@ -43,10 +45,14 @@ export class CommandService {
     return data;
   }
 
-  async get(laboratoryName: string) : Promise<string[]>{
+  async get(laboratoryName: string) : Promise<Laboratory>{
 
-    const childProcess = exec(`podman ps --format "{{.Names}} {{.ID}}" | grep '${laboratoryName}'`);
+    const command :string =  `podman ps --format "{{.Names}} {{.ID}}" | grep '^${laboratoryName}_os'`;
+
+    const childProcess = exec(command);
   
+    console.log('command: ' + command);
+
     let data = "";
     for await (const chunk of childProcess.stdout) {
         console.log('stdout chunk: '+chunk);
@@ -64,13 +70,19 @@ export class CommandService {
     });
 
     if(exitCode) {
-        //throw new Error( `subprocess error exit ${exitCode}, ${error}`);
         console.error( `subprocess error exit ${exitCode}, ${error}`);
     }
 
-    if(!data) return [];
+    if(!data) return null;
 
-    return data.split('\n').filter(linea => linea.trim() !== '');
+    // quito los saltos de linea
+    let dataString : string = data.split('\n').filter(linea => linea.trim() !== '')[0];
+
+    const [nombre, id] = dataString.split(' ');
+
+    const labotaory : Laboratory = new Laboratory(id, nombre)
+
+    return labotaory;
   }
 
 }

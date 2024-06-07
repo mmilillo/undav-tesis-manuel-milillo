@@ -1,8 +1,11 @@
 import { Body, Controller, Get, HttpException, HttpStatus, Param, Post } from '@nestjs/common';
 import { CommandService } from './command.service';
 import { ComposeCommandDto } from './composeCommandDto';
+import { ApiTags } from '@nestjs/swagger';
+import { Laboratory } from './laboratory';
 
 @Controller('command')
+@ApiTags('podman-compose')
 export class CommandController {
     constructor(private readonly commandService: CommandService) {}
 
@@ -21,8 +24,15 @@ export class CommandController {
     }
 
     @Get(':laboratoryName')
-    async getPods(@Param() params : any): Promise <string[]> {
-        return await this.commandService.get(params.laboratoryName);
+    async getPods(@Param() params : any): Promise <Laboratory> {
+
+        const laboratory : Laboratory = await this.commandService.get(params.laboratoryName);
+
+        if(!laboratory){
+            throw new HttpException('Laboratory not found', HttpStatus.NOT_FOUND);
+        }
+
+        return laboratory;
     }
 
 }

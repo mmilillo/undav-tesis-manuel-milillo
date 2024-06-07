@@ -1,7 +1,8 @@
 image: docker.io/library/ubuntu
 container_name: _os_ubuntu
 volumes:
-  - ./local:/codigo
-working_dir: /codigo
-command: /bin/bash -c "apt-get update && apt-get install -y git && cd /codigo && git init && sleep infinity"
+  - ./working_directory:/working_directory
+  - ./code:/code
+working_dir: /working_directory
+command: /bin/bash -c "apt-get update && apt-get install -y git && git init && git config --global user.email 'you@example.com' && git config --global user.name 'exampĺe' && sleep infinity"
 tty: true 
