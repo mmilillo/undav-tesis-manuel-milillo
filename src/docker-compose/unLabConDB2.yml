@@ -2,19 +2,19 @@ version: 1.0.6
 services:
   SO:
     image: docker.io/library/ubuntu
-    container_name: labDemo_os_ubuntu
+    container_name: unLabConDB2_os_ubuntu
     volumes:
       - ./working_directory:/working_directory
       - ./code:/code
     working_dir: /working_directory
     command: >-
-      /bin/bash -c "apt-get update && apt-get install -y git && git init &&
-      git config --global user.email "you@example.com" && git config --global
-      user.name "exampĺe" && sleep infinity"
+      /bin/bash -c "apt-get update && apt-get install -y git && git init && git
+      config --global user.email 'you@example.com' && git config --global
+      user.name 'exampĺe' && sleep infinity"
     tty: true
   DB:
     image: docker.io/library/postgres
-    container_name: labDemo_db_postgres
+    container_name: unLabConDB2_db_postgres
     environment:
       POSTGRES_USER: myuser
       POSTGRES_PASSWORD: mypassword

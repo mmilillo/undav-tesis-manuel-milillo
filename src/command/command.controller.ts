@@ -20,15 +20,30 @@ export class CommandController {
             throw new HttpException('operation must be defined', HttpStatus.BAD_REQUEST);
         }
 
-        return await this.commandService.exect(composeCommandDto);
+        await this.commandService.exect(composeCommandDto);
+
+        return JSON.stringify(composeCommandDto);
     }
 
     @Get(':laboratoryName')
-    async getPods(@Param() params : any): Promise <Laboratory> {
+    async getPodById(@Param() params : any): Promise <Laboratory> {
 
-        const laboratory : Laboratory = await this.commandService.get(params.laboratoryName);
+        const laboratory : Laboratory[] = await this.commandService.get(params.laboratoryName);
 
         if(!laboratory){
+            throw new HttpException('Laboratory not found', HttpStatus.NOT_FOUND);
+        }
+
+        return laboratory[0];
+    }
+
+    @Get()
+    async getPods(@Param() params : any): Promise <Laboratory[]> {
+
+        const laboratory : Laboratory[] = await this.commandService.get();
+
+        if(!laboratory){
+            return [];
             throw new HttpException('Laboratory not found', HttpStatus.NOT_FOUND);
         }
 

@@ -24,7 +24,7 @@ Para ver el diagrama en mas detalle puede importar el archivo `/diagrams/diagram
 * NPM >= 10.2.4 [Link instalación](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
 * Nodejs >= v20.11.0 - [Link instalación](https://nodejs.org/en/download/package-manager)
 * Podman >= 3.4.4 [Link instalación](https://podman.io/docs/installation)
-* Podman-compose >= 1.0.6 [TO-DO: buscar guía instalación]()
+* Podman-compose >= 1.0.6 [podman compose](https://github.com/containers/podman-compose)
 
 
 ## Installation

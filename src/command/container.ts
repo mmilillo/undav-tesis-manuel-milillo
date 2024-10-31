@@ -1,12 +1,15 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { Container } from "./container";
 
 
-export class Laboratory {
+export type ContainerType =
+| 'OS'
+| 'DB';
 
-  constructor(id: string, laboratoryName: string, status: string = "") {
+export class Container {
+
+  constructor(id: string, containerName: string, status: string = "") {
     this.id = id;
-    this.laboratoryName = laboratoryName;
+    this.containerName = containerName;
     this.status = status;
   }
 
@@ -16,14 +19,17 @@ export class Laboratory {
   @ApiProperty({description: 'Laboratory to work on', required: true})
   laboratoryName: string
 
+  @ApiProperty({description: 'Laboratory to work on', required: true})
+  containerName: string
+
   @ApiProperty({description: 'Laboratory to work on', required: false})
   status: string
 
   @ApiProperty({description: 'Name of container system', required: false})
   systemName : string
 
-  @ApiProperty({description: 'Containers of laboratory', required: false})
-  containers : Container[];
+  @ApiProperty({description: 'Type of container: OS or DB', required: false})
+  type : ContainerType
 
   }
 

@@ -37,3 +37,4 @@ lerna-debug.log*
 # local tests
 ./src/docker-compose/local/*
 */docker-compose/local/*
+src/docker-compose/working_directory/*

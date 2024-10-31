@@ -11,21 +11,24 @@ export class VersionControlService {
     constructor(private readonly commandService: CommandService) {}
 
     async getStatus(gitCommandDto: GitCommandDto) : Promise<GitFile[]>{
-        const laboratory : Laboratory = await this.commandService.get(gitCommandDto.laboratoryName);
-        return await this.status(laboratory.id);
+        //const laboratory : Laboratory[] = await this.commandService.get(gitCommandDto.laboratoryName);
+        //return await this.status(laboratory[0].id);
+        return [];
     }
 
     async commitChanges(gitCommandDto: GitCommandDto) : Promise<void>{
-        const laboratory : Laboratory = await this.commandService.get(gitCommandDto.laboratoryName);
-        await this.add(laboratory.id);
-        const gitFiles : GitFile[] = await this.status(laboratory.id);
+        /*const laboratory : Laboratory[] = await this.commandService.get(gitCommandDto.laboratoryName);
+        await this.add(laboratory[0].id);
+        const gitFiles : GitFile[] = await this.status(laboratory[0].id);
         if(gitFiles.length < 1) return;
-        return this.commit(laboratory.id, gitCommandDto.message);
+        return this.commit(laboratory[0].id, gitCommandDto.message);*/
+        return null;
     }
 
     async resetChanges(gitCommandDto: GitCommandDto) : Promise<void>{
-        const laboratory : Laboratory = await this.commandService.get(gitCommandDto.laboratoryName);
-        return await this.reset(laboratory.id);
+        //const laboratory : Laboratory[] = await this.commandService.get(gitCommandDto.laboratoryName);
+        //return await this.reset(laboratory[0].id);
+        return null;
 
     }
 
