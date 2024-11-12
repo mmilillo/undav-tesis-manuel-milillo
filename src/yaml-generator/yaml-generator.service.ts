@@ -7,6 +7,12 @@ import { string } from 'yaml/dist/schema/common/string';
 import { Laboratory } from 'src/command/laboratory';
 import { extname, basename } from 'path';
 
+interface YamlDTO {
+  image: string;
+  ports: string[];
+  environment: string[];
+}
+
 @Injectable()
 export class YamlGeneratorService {
   generateFile(createFileDto: CreateFileDto ): void {
@@ -88,6 +94,8 @@ export class YamlGeneratorService {
       return file; // Si no tiene la extensión .yml, lo retorna sin cambios
     });
 
+    console.log('filesWithoutExtension:' + filesWithoutExtension)
+
     // Crear una instancia de Laboratory por cada archivo en el array
     const laboratories = filesWithoutExtension.map((file, index) => {
       return new Laboratory((index + 1).toString(), file); // index + 1 como id, nombre del archivo como laboratoryName
@@ -106,16 +114,70 @@ export class YamlGeneratorService {
   }
 
   getComposeFileByName(laboratoryName: string): Laboratory {
-
     const laboratories = this.readComposeFiles();
     const laboratory : Laboratory = laboratories.find(lab => lab.laboratoryName === laboratoryName);
-
     if(!laboratory){
       throw 'laboratorio no encontrado'
     }
 
     return laboratory;
 
+  }
+
+  getYmlFileByName(laboratoryName: string): string {
+
+    const filePath = `./src/docker-compose/${laboratoryName}.yml`;
+    //const laboratories = this.readComposeFiles();
+    console.log('inicia funcion para un yaml')
+    const laboratory = this.loadYAML(filePath);
+    
+    // en caso que se quiera mapear a un DTO
+    /*if (laboratories) {
+      const dtos: YamlDTO[] = this.mapYAMLToDTO(laboratories);
+      console.log('DTOs:', dtos);
+    }*/
+
+  
+    if(!laboratory){
+      throw 'laboratorio no encontrado'
+    }
+
+    return laboratory;
+
+  }
+
+  // Función para leer y cargar el archivo YAML
+  loadYAML(filePath: string): any {
+    try {
+      console.log('filePath: ' + filePath)
+      const fileContents = readFileSync(filePath, 'utf8');
+
+
+      //const filePath = `./src/docker-compose`;
+      //let files : string [] = readdirSync(filePath);
+
+      //const dbPath = `./src/db/${createFileDto.db}.yaml`;
+      //const dbFile = readFileSync(dbPath, 'utf8');
+
+
+      console.log('se encontro:' + fileContents)
+      return load(fileContents);
+    } catch (e) {
+      console.error('Error loading YAML file:', e);
+      return null;
+    }
+  }
+
+  // Función para mapear el archivo YAML a tu DTO
+  mapYAMLToDTO(yamlData: any): YamlDTO[] {
+    return Object.keys(yamlData.services).map((serviceName) => {
+      const service = yamlData.services[serviceName];
+      return {
+        image: service.image,
+        ports: service.ports,
+        environment: service.environment || [],
+      };
+    });
   }
 
 }

@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Get, HttpException, HttpStatus, Param, Put, Req, Res } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, Header, HttpException, HttpStatus, Param, Put, Req, Res } from '@nestjs/common';
 import { YamlGeneratorService } from './yaml-generator.service';
 import { CreateFileDto } from './CreateFileDto';
 import { error } from 'console';
@@ -54,7 +54,21 @@ export class YamlGeneratorController {
   @Get(':laboratoryName')
   async getComposeFilesByName(@Param() params : any): Promise<Laboratory> {
     try{
+      console.log('getComposeFilesByName')
         return await this.yamlGeneratorService.getComposeFileByName(params.laboratoryName);
+    }catch(e){
+      throw new HttpException('Laboratories can not be found', HttpStatus.NOT_FOUND);
+    }
+  }
+
+  @ApiResponse({ status: 200, description: 'The record has been successfully created.'})
+  @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: 'Required fields not completed.'})
+  @Get(':laboratoryName/file')
+  async getYmlFilesByName(@Param() params : any): Promise<string> {
+    try{
+
+      console.log('getYmlFilesByName')
+        return await this.yamlGeneratorService.getYmlFileByName(params.laboratoryName);
     }catch(e){
       throw new HttpException('Laboratories can not be found', HttpStatus.NOT_FOUND);
     }
