@@ -13,7 +13,7 @@ export class YamlGeneratorController {
     constructor(private readonly yamlGeneratorService: YamlGeneratorService) {}
 
   @Put()
-  @ApiResponse({ status: 201, description: 'The record has been successfully created.'})
+  @ApiResponse({ status: 201, description: 'The YAML has been successfully created.', type: CreateFileDto})
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: 'Required fields not completed.'})
   createFile(@Body() createFileDto: CreateFileDto): string {
 
@@ -38,7 +38,7 @@ export class YamlGeneratorController {
   }
 
   @Get()
-  @ApiResponse({ status: 200, description: 'The record has been successfully created.'})
+  @ApiResponse({ status: 200, description: 'The Laboratories has been successfully found.', type: Laboratory, isArray: true})
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: 'Required fields not completed.'})
   async getComposeFiles(@Body() createFileDto: CreateFileDto): Promise<Laboratory[]> {
     try{
@@ -49,7 +49,7 @@ export class YamlGeneratorController {
   }
 
 
-  @ApiResponse({ status: 200, description: 'The record has been successfully created.'})
+  @ApiResponse({ status: 200, description: 'The Laboratory has been successfully found.', type: Laboratory})
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: 'Required fields not completed.'})
   @Get(':laboratoryName')
   async getComposeFilesByName(@Param() params : any): Promise<Laboratory> {
@@ -61,7 +61,7 @@ export class YamlGeneratorController {
     }
   }
 
-  @ApiResponse({ status: 200, description: 'The record has been successfully created.'})
+  @ApiResponse({ status: 200, description: 'The YAML has been successfully found.', type: String})
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: 'Required fields not completed.'})
   @Get(':laboratoryName/file')
   async getYmlFilesByName(@Param() params : any): Promise<string> {
