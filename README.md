@@ -1,4 +1,4 @@
-# undav-tesis-manuel-milillo
+# undav-tesis-manuel-milillo - Back-end
 
 ### Herramienta basada en contenedores con el fin de emular ambientes de trabajo reales destinados a la enseñanza universitaria
 
@@ -20,6 +20,9 @@ Para ver el diagrama en mas detalle puede importar el archivo `/diagrams/diagram
 
 
 ## Prerrequisitos
+
+
+Esta aplicacion funciona junto con su correspondiente [front-end](https://github.com/mmilillo/undav-tesis-manuel-milillo-ui), este tiene su propia guia de instalacion.
 
 La aplicacion requiere los siguiente prerrequisitos. Estos pueden ser instalados de forma manual en el servidor donde se ejecutará la aplicacion o bien utilizar el script que se presenta en esta seccion. 
 
