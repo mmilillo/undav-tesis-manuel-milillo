@@ -1,8 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { exec, spawn } from 'child_process';
 import { GitCommandDto } from './gitCommandDto';
-import { CommandService } from 'src/command/command.service';
-import { Laboratory } from 'src/command/laboratory';
+import { CommandService } from '../command/command.service';
 import { GitFile } from './gitFile';
 
 @Injectable()

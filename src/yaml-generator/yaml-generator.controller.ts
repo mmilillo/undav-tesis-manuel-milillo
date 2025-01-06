@@ -1,10 +1,8 @@
 import { BadRequestException, Body, Controller, Get, Header, HttpException, HttpStatus, Param, Put, Req, Res } from '@nestjs/common';
 import { YamlGeneratorService } from './yaml-generator.service';
 import { CreateFileDto } from './CreateFileDto';
-import { error } from 'console';
-import { response } from 'express';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Laboratory } from 'src/command/laboratory';
+import { Laboratory } from '../command/laboratory';
 
 
 @Controller('yaml-generator')

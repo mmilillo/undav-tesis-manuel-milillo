@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { VersionControlService } from './version-control.service';
 import { CommandModule } from '../command/command.module';
-import { CommandService } from '../command/command.service';
+
 
 describe('VersionControlService', () => {
   let service: VersionControlService;
@@ -10,7 +10,7 @@ describe('VersionControlService', () => {
 
     const module: TestingModule = await Test.createTestingModule({
       imports: [CommandModule],
-      providers: [CommandService,],
+      providers: [VersionControlService],
     }).compile();
 
     service = module.get<VersionControlService>(VersionControlService);

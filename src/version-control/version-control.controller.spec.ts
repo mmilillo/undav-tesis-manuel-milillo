@@ -1,14 +1,16 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { VersionControlController } from './version-control.controller';
+import { VersionControlService } from './version-control.service';
 import { CommandModule } from '../command/command.module';
-import { CommandService } from '../command/command.service';
 
 describe('VersionControlController', () => {
   let controller: VersionControlController;
+  let service: VersionControlService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [CommandModule],
+      providers: [VersionControlService],
       controllers: [VersionControlController],
     }).compile();
 
