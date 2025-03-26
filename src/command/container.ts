@@ -3,13 +3,15 @@ import { ApiProperty } from "@nestjs/swagger";
 
 export type ContainerType =
 | 'OS'
-| 'DB';
+| 'DB'
+| 'IMPORTED';
 
 export class Container {
 
-  constructor(id: string, containerName: string, status: string = "") {
+  constructor(id: string, containerName: string, image:string, status: string = "") {
     this.id = id;
     this.containerName = containerName;
+    this.image = image;
     this.status = status;
   }
 
@@ -30,6 +32,9 @@ export class Container {
 
   @ApiProperty({description: 'Type of container: OS or DB', required: false})
   type : ContainerType
+
+  @ApiProperty({description: 'Image of container', required: false})
+  image : string
 
   }
 

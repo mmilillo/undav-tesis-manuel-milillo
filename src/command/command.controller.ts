@@ -1,8 +1,12 @@
-import { Body, Controller, Get, HttpException, HttpStatus, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Header, HttpException, HttpStatus, Param, Post, Put, StreamableFile, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { CommandService } from './command.service';
 import { ComposeCommandDto } from './composeCommandDto';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Laboratory } from './laboratory';
+import { access, constants, createReadStream } from 'node:fs';
+import { join } from 'node:path';
+import { FileInterceptor } from '@nestjs/platform-express/multer';
+import { ImportLaboratoryDto } from './importLaboratoryDto';
 
 @Controller('command')
 @ApiTags('podman-compose')
@@ -26,6 +30,7 @@ export class CommandController {
 
         return JSON.stringify(composeCommandDto);
     }
+
 
     @Get(':laboratoryName')
     @ApiResponse({ status: 200, description: 'The command has been successfully executed.', type: Laboratory})
@@ -54,6 +59,54 @@ export class CommandController {
         }
 
         return laboratory;
+    }
+
+    @Post('export/:laboratoryName')
+    @ApiResponse({ status: 200, description: 'The command has been successfully executed.', type: StreamableFile})
+    @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: 'Laboratory not found.'})
+    async exportLaboratory(@Param() params : any): Promise<{ path: string }> {
+
+        const laboratory : Laboratory[] = await this.commandService.get(params.laboratoryName);
+        
+        if(!laboratory){
+            throw new HttpException('Laboratory not found', HttpStatus.NOT_FOUND);
+        }
+
+        const soLaboratory = laboratory[0].containers.find(container => container.type === "OS");
+
+        try{
+            await this.commandService.buildImage(soLaboratory.containerName, soLaboratory.containerName);
+            await this.commandService.exportImage(soLaboratory.containerName);
+        }
+        catch(error){
+            console.error(error);
+            throw new HttpException('Laboratory already exists', HttpStatus.BAD_REQUEST);
+        }
+
+        const filePath : string = join(process.cwd(), `${soLaboratory.containerName}.tar`);
+
+        //const file = createReadStream(filePath);
+        //return new StreamableFile(file);
+
+        console.log("filePath exportado: " + filePath);
+        return { path: filePath };
+    }
+
+    @Post('import')
+    async importLaboratory(@Body() importLaboratoryDto: ImportLaboratoryDto): Promise<ImportLaboratoryDto> {
+
+        const laboratoryPath = importLaboratoryDto.laboratoryPath;
+        const fileName = importLaboratoryDto.fileName;
+
+        if(!laboratoryPath || !fileName){
+            throw new HttpException('Invalid null values', HttpStatus.BAD_REQUEST);
+        }
+
+        
+
+        await this.commandService.importImage(laboratoryPath, fileName);
+        
+        return importLaboratoryDto
     }
 
 }
